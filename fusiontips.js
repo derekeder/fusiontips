@@ -240,6 +240,7 @@
     }
     
     function processFusionJson(json, latlng) {
+      //console.log(json);
       //{table:{cols:[col1,col2], rows:[[val11,val12],[val21,val22]]}};
       var data = json;
       html = "";

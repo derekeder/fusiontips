@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!--
+copyright (c) 2011 Google inc.
+You are free to copy and use this sample.
+License can be found here: http://code.google.com/apis/ajaxsearch/faq/#license
+-->
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <title>Fusion Tables Layer Mouse Over</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            
+            #map_canvas {
+                height: 500px;
+                width: 100% px;
+            }
+        </style>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false">
+        </script>
+        <!-- visualization API will be used to query fusion table if loaded here, otherwise use the fusion query jsoncallback
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+        google.load('visualization', '1', {});
+        </script>
+        -->
+        <script type="text/javascript" src="fusiontips.js">
+        </script>
+        <script type="text/javascript" id="script">
+            
+            var map, layer;
+            var googleApiKey = "AIzaSyA3FQFrNr5W2OEVmuENqhb2MBB2JabdaOY";
+            
+            function loadPoint() {
+              if (layer != null) {
+                layer.setMap(null);
+                google.maps.event.clearInstanceListeners(layer);
+              }
+              var tableid = '15UY2pgiz8sRkq37p2TaJd64U7M_2HDVqHT3Quw';
+              layer = new google.maps.FusionTablesLayer({
+                query: {
+                  select: 'Address',
+                  from: tableid
+                },
+                map: map
+              });
+              layer.enableMapTips({
+                select: "'Store Name','Address'", // list of columns to query, typially need only one column.
+                from: tableid, // fusion table name
+                geometryColumn: 'Address', // geometry column name
+                suppressMapTips: false, // optional, whether to show map tips. default false
+                delay: 200, // milliseconds mouse pause before send a server query. default 300.
+                tolerance: 8, // tolerance in pixel around mouse. default is 6.
+                googleApiKey: googleApiKey
+              });
+              map.setCenter(new google.maps.LatLng(37.4, -122.1));
+              map.setZoom(10);
+              addListeners();
+              google.maps.event.addListener(layer, 'click', function(me){
+                me.infoWindowHtml = me.infoWindowHtml+ "<a href='javascript:void'>Test</a>";
+              });
+            }
+            function loadLine() {
+              if (layer != null) {
+                layer.setMap(null);
+                google.maps.event.clearInstanceListeners(layer);
+              }
+              var tableid = '1xo_sVz4108NNejzUCGp_2nJIoOltKi467LYbHg';
+              layer = new google.maps.FusionTablesLayer({
+                query: {
+                  select: 'geometry',
+                  from: tableid
+                },
+                map: map
+              });
+              layer.enableMapTips({
+                select: "description", // list of columns to query, typially need only one column.
+                from: tableid, // fusion table name
+                geometryColumn: 'geometry', // geometry column name
+                suppressMapTips: false, // optional, whether to show map tips. default false
+                delay: 200, // milliseconds mouse pause before send a server query. default 300.
+                tolerance: 4, // tolerance in pixel around mouse. default is 6.
+                googleApiKey: googleApiKey
+              });
+              map.setCenter(new google.maps.LatLng(50.46,-104.6));
+              map.setZoom(12);
+              addListeners();
+              
+            }
+            function loadPoly() {
+              if (layer != null) {
+                layer.setMap(null);
+                google.maps.event.clearInstanceListeners(layer);
+                
+              }
+              var tableid = '18Vjqv451aikVXxlnGKhVEIJ0y4l18ZQ86eReE68';
+              layer = new google.maps.FusionTablesLayer({
+                query: {
+                  select: 'geometry_simplified',
+                  from: tableid
+                },
+                map: map
+              });
+              layer.enableMapTips({
+                select: "'NAME'", // list of columns to query, typially need only one column.
+                from: tableid, // fusion table name
+                geometryColumn: 'geometry_simplified', // geometry column name
+                suppressMapTips: false, // optional, whether to show map tips. default false
+                delay: 100, // milliseconds mouse pause before send a server query. default 300.
+                tolerance: 1, // tolerance in pixel around mouse. default is 6.
+                googleApiKey: googleApiKey
+              });
+              map.setCenter(new google.maps.LatLng(38.3, -95.4));
+              map.setZoom(4);
+              addListeners();
+              
+            }
+            
+            function addListeners() {
+              google.maps.event.addListener(layer, 'mouseover', function(fEvent) {
+                var row = fEvent.row;
+                myHtml = 'mouseover:<br/>';
+                for (var x in row) {
+                  if (row.hasOwnProperty(x)) {
+                    myHtml += '<b>' + x + "</b>:" + row[x].value + "<br/>";
+                  }
+                }
+                document.getElementById('info').innerHTML = myHtml;
+                
+              });
+              google.maps.event.addListener(layer, 'mouseout', function(fevt) {
+                document.getElementById('info').innerHTML = '';
+                
+              });
+            }
+            
+            function initialize() {
+              map = new google.maps.Map(document.getElementById('map_canvas'), {
+                center: new google.maps.LatLng(37.4, -122.1),
+                zoom: 10,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+              });
+              loadPoint();
+            }
+        </script>
+    </head>
+    <body onload="initialize();">
+        <div>
+            Move mouse over a fusion table feature and pause a while 
+            (configurable, default < 0.5 sec), a map tip will display.
+        </div>
+        <div>
+            Select an sample fusion table: 
+            <input type="radio" name="ft" checked onclick="loadPoint()">Point
+            <input type='radio' name="ft" onclick="loadLine()">Line
+            <input type='radio' name="ft" onclick="loadPoly()">Polygon
+        </div>
+        <div id="map_canvas">
+        </div>
+        <div id="info">
+        </div>
+    </body>
+</html>
