@@ -19,6 +19,6 @@ See the docs and example folders
 * Make your feature addition or bug fix.
 * Commit and send me a pull request.
 
-### License
+## License
 
 Released under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
