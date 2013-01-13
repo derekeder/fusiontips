@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <title>Examples</title>
+        <link rel="stylesheet nofollow" type="text/css" href="http://code.google.com/css/codesite.css"/>
+        <link rel="stylesheet nofollow" type="text/css" href="http://gmaps-utility-library.googlecode.com/svn/trunk/util/docs/template/local_extensions.css"/>
+        <script type="text/javascript" src="http://code.google.com/js/prettify.js">
+        </script>
+    </head>
+    <body onload="prettyPrint()">
+        <div>
+            <a name="Top"></a>
+            <h1><a></a><span lang="en-us">Fusion Tips</span> Examples</h1>
+        </div>
+        <p>
+            <a href="reference.html">API Reference</a>
+        </p>
+        <div>
+            <h2><a name="HowTo"></a>Include Scripts</h2>
+            <p>
+                This library enables map tips and mouseover/mouseout for FusionTablesLayer 
+            </p>
+            <p>
+                The first step is to include 
+                <code>
+                    fusiontips.js
+                </code>
+                or 
+                <code>
+                    fusiontips_compiled.js
+                </code>
+                in your document header, after GMaps API is load. You can use the online version if you do not want to download the script.
+            </p>
+            <pre class="prettyprint">
+      &lt;script src=&quot;/path/to/fusiontips_compiled.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+    </pre>
+        </div>
+        <div>
+            <h2><span lang="en-us">Enable Map tips</span></h2>
+            <p>
+                <span lang="en-us">You can simply call 
+                    <code>
+                        google.maps.FusionTablesLayer.enableMapTips(options)
+                    </code>
+                    to enable it.
+                </span>
+            </p>
+            <pre class="prettyprint">
+        function init(){
+        ....
+              var tableid = 297050;
+              var googleApiKey = "xxxxxx"; //get yours at https://code.google.com/apis/console/
+              layer = new google.maps.FusionTablesLayer({
+                query: {
+                  select: 'Address',
+                  from: tableid
+                },
+                map: map
+              });
+              layer.enableMapTips({
+                select: "'Store Name','Address'", // list of columns to query, typially need only one column.
+                from: tableid, // fusion table name
+                geometryColumn: 'Address', // geometry column name
+                suppressMapTips: false, // optional, whether to show map tips. default false
+                delay: 200, // milliseconds mouse pause before send a server query. default 300.
+                tolerance: 8, // tolerance in pixel around mouse. default is 6.
+                googleApiKey: googleApiKey
+              });
+              //listen to events if desired.
+              google.maps.event.addListener(layer, 'mouseover', function(fEvent) {
+                var row = fEvent.row;
+                myHtml = 'mouseover:&lt;br/&gt;';
+                for (var x in row) {
+                  if (row.hasOwnProperty(x)) {
+                    myHtml += '&lt;b&gt;' + x + "&lt;/b&gt;:" + row[x].value + "&lt;br/&gt;";
+                  }
+                }
+                document.getElementById('info').innerHTML = myHtml;
+              });
+              google.maps.event.addListener(layer, 'mouseout', function(fevt) {
+                document.getElementById('info').innerHTML = '';
+              });
+        }
+    </pre>
+            <p>
+                <a target="_blank" href="../examples/fusiontips.html">View example </a>
+            </p>
+        </div>
+        <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+            var pageTracker = _gat._getTracker("UA-3946449-5");
+            pageTracker._trackPageview();
+        </script>
+    </body>
+</html>
