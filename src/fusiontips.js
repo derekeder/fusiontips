@@ -148,6 +148,7 @@
    * @property {number} [delay] optional. milliseconds mouse pause before send a server query. default 500.
    * @property {number} [tolerance] required. tolerance in pixel around mouse. default is 6.
    * @property {Object} [style] optional. the css style of map tip.
+   * @property {String} [where] optional. "where" filter for select.
    */
   /**
    * @name google.maps.FusionTablesLayer
@@ -215,6 +216,9 @@
       var ne = prj.fromDivPixelToLatLng(px);
       var bounds = new google.maps.LatLngBounds(sw, ne);
       var swhere = "ST_INTERSECTS(" + opts.geometryColumn + ",RECTANGLE(LATLNG(" + bounds.getSouthWest().lat() + "," + bounds.getSouthWest().lng() + "),LATLNG(" + bounds.getNorthEast().lat() + "," + bounds.getNorthEast().lng() + ")))";
+      if (opts.where) {
+        swhere += " AND " + opts.where;
+      }
       var queryText = encodeURIComponent("SELECT " + opts.select + " FROM " + opts.from + " WHERE " + swhere);
       queryPending = true;
       queryFusionJson(latlng, queryText);
