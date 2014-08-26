@@ -1,11 +1,6 @@
 ## fusiontips
 
-Forked from [Derek Eder](https://github.com/derekeder/fusiontips) who forked from [Google Code](http://code.google.com/p/gmaps-utility-gis/source/browse/trunk/fusiontips/src/fusiontips.js) to enable usage with the Fusion Tables v1 API.
-
-I've added two examples which combine fusiontips' tooltip feature with a zoom-to-address search box adapted from [this Google example](https://developers.google.com/fusiontables/docs/samples/search_and_zoom)
-
-
-## from derek eder's original repo
+Forked from [Google Code](http://code.google.com/p/gmaps-utility-gis/source/browse/trunk/fusiontips/src/fusiontips.js) to enable usage with the Fusion Tables v1 API.
 
 This library allows MapTip and fires mouseover/mouseout event for FusionTableLayers. It uses mouse cursor tracking and pause delay to trigger FusionTableQuery. It is not true mouseover event, but should suit most use cases.
 
