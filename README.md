@@ -4,6 +4,56 @@ Forked from [Google Code](http://code.google.com/p/gmaps-utility-gis/source/brow
 
 This library allows MapTip and fires mouseover/mouseout event for FusionTableLayers. It uses mouse cursor tracking and pause delay to trigger FusionTableQuery. It is not true mouseover event, but should suit most use cases.
 
+## Usage
+
+### Include Scripts
+This library enables map tips and mouseover/mouseout for FusionTablesLayer
+The first step is to include `fusiontips.js` in your document header, after GMaps API is load. You can use the online version if you do not want to download the script.
+
+```html
+<script src="/path/to/fusiontips.js" type="text/javascript"></script>
+```
+
+### Enable Map tips
+You can simply call google.maps.FusionTablesLayer.enableMapTips(options) to enable it.
+
+```javascript
+function init(){
+  var tableid = 297050;
+  var googleApiKey = "xxxxxx"; //get yours at https://code.google.com/apis/console/
+  layer = new google.maps.FusionTablesLayer({
+    query: {
+      select: 'Address',
+      from: tableid
+    },
+    map: map
+  });
+  layer.enableMapTips({
+    select: "'Store Name','Address'", // list of columns to query, typially need only one column.
+    from: tableid, // fusion table name
+    geometryColumn: 'Address', // geometry column name
+    suppressMapTips: false, // optional, whether to show map tips. default false
+    delay: 200, // milliseconds mouse pause before send a server query. default 300.
+    tolerance: 8, // tolerance in pixel around mouse. default is 6.
+    googleApiKey: googleApiKey
+  });
+  //listen to events if desired.
+  google.maps.event.addListener(layer, 'mouseover', function(fEvent) {
+    var row = fEvent.row;
+    myHtml = 'mouseover:<br/>';
+    for (var x in row) {
+      if (row.hasOwnProperty(x)) {
+        myHtml += '<b>' + x + "</b>:" + row[x].value + "<br/>";
+      }
+    }
+    document.getElementById('info').innerHTML = myHtml;
+  });
+  google.maps.event.addListener(layer, 'mouseout', function(fevt) {
+    document.getElementById('info').innerHTML = '';
+  });
+}
+```
+
 ## Reference
 
 ### <a name="google.maps.FusionTablesLayer"></a>class FusionTablesLayer
