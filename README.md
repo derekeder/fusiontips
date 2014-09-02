@@ -54,6 +54,12 @@ function init(){
 }
 ```
 
+## Examples
+
+* [Point, Line and Polygon](http://derekeder.github.io/fusiontips/examples/point-line-polygon/fusiontips.html)
+* [Hover and search - points](http://derekeder.github.io/fusiontips/examples/search-and-hover/points-hover-add-search.html)
+* [Hover and search - polygon](http://derekeder.github.io/fusiontips/examples/search-and-hover/polygon-hover-add-search.html)
+
 ## Reference
 
 ### <a name="google.maps.FusionTablesLayer"></a>class FusionTablesLayer
