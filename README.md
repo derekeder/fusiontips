@@ -11,7 +11,8 @@ See the docs and example folders
 
 * [Nianwei Liu](http://code.google.com/u/104139885275196935151/) - original library owner
 * [Gary Little](http://code.google.com/u/117613638752768553824/) - contributor to original library
-* [Derek Eder](http://derekeder.com) - Fusion Tables v1 API updates
+* [Derek Eder](https://github.com/derekeder) - Fusion Tables v1 API updates
+* [Chad Skelton](https://github.com/chadskelton) - search and hover examples
 
 ## Note on Patches/Pull Requests
  

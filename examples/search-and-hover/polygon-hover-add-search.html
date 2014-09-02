@@ -28,24 +28,23 @@ License can be found here: http://code.google.com/apis/ajaxsearch/faq/#license
         google.load('visualization', '1', {});
         </script>
         -->
-        <script type="text/javascript" src="https://af16429c74a375cffa57c63e3bab85c04989c67c.googledrive.com/host/0B4yUkVI3EwbbOU9CSm9nM3pWM2c/fusiontips.js">
+        <script type="text/javascript" src="../../src/fusiontips.js">
         </script>
         <script type="text/javascript" id="script">
             
             var map, layer;
-            var googleApiKey = "PUT_YOUR_API_KEY_HERE"; // Get from Google API console https://code.google.com/apis/console
-			var geometryColumn = "latlon"; // geometry column name, may be Address for a points map
-			var tableid = '1BgHHAXf5Ay2xALxHKmswOLpKffr8IN-cnZy9Kbhj'; // Take from Fusion Tables About page
+            var googleApiKey = "AIzaSyA3FQFrNr5W2OEVmuENqhb2MBB2JabdaOY"; // Get from Google API console https://code.google.com/apis/console
+			var geometryColumn = "geometry"; // geometry column name, may be Address for a points map
+			var tableid = '1qapMbDi_21hUw-E0rgL_-NxuFKyBXjUWCYHexGC6'; // Take from Fusion Tables About page. You must use encrypted tableid
 			var defaultCenter = new google.maps.LatLng(49.277541509014476, -123.08290460351562); // Map centre in lat/lon for default and reset
-			var defaultZoom = 12; // Zoom level for default map view and reset
-			var searchZoom = 14; // Zoom level for map search
+			var defaultZoom = 10; // Zoom level for default map view and reset
+			var searchZoom = 12; // Zoom level for map search
 			var geocodeBias = ", Greater Vancouver, BC" // Can add a bias to tack onto the end of address searches. Leave blank for none
-			var tooltipFields = "'Name', 'Address'" // Fields to show on tooltip
-			var delay = 100; // milliseconds mouse pause before send a server query. default 300.
-			var tolerance = 50; // tolerance in pixel around mouse. default is 6. want a bigger number for point maps
+			var tooltipFields = "'FSA', 'Place'" // Fields to show on tooltip
+			var delay = 200; // milliseconds mouse pause before send a server query. default 300.
+			var tolerance = 1; // tolerance in pixel around mouse. default is 6. want a bigger number for point maps
             
 			function loadMap() {
-              //NOTE: you must use the encrypted tableid
               var geocoder = new google.maps.Geocoder();
 			  
 			  layer = new google.maps.FusionTablesLayer({
