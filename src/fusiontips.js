@@ -263,6 +263,9 @@
             };
             row[data.columns[i]] = cell;
           }
+          if (opts && opts.tipHtmlRowsTemplateFunction) {
+          	html = opts.tipHtmlRowsTemplateFunction(data.rows);
+          }
         }
         
       } else {
