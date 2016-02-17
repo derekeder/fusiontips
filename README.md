@@ -36,7 +36,7 @@ function init(){
     delay: 200, // milliseconds mouse pause before send a server query. default 300.
     tolerance: 8, // tolerance in pixel around mouse. default is 6.
     googleApiKey: googleApiKey,
-    tipHtmlRowsTemplateFunction: function(rows) {
+    htmlTemplate: function(rows) {
         return 'Details: <b>My Column1: </b>' + rows[0][0] + '<br><b>My Column2: </b>'+rows[0][1];
       } 
   });

@@ -263,8 +263,8 @@
             };
             row[data.columns[i]] = cell;
           }
-          if (opts && opts.tipHtmlRowsTemplateFunction) {
-          	html = opts.tipHtmlRowsTemplateFunction(data.rows);
+          if (opts && opts.htmlTemplate) {
+          	html = opts.htmlTemplate(data.rows);
           }
         }
         
