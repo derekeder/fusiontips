@@ -172,6 +172,8 @@
     var queryPending = false;
     var containerPos = findElPos(me.getMap().getDiv());
     var tol = opts.tolerance || 6;
+	
+	
     google.maps.event.addListenerOnce(maptip, 'ready', function() {
       // map.mousemove may not fire consistently, so we calc latlng from DOM events
       me.mousemoveListener_ = google.maps.event.addDomListener(me.getMap().getDiv(), 'mousemove', function(evt) {
@@ -192,7 +194,7 @@
           var mousePos = findMousePos(evt);
           var containerPx = new google.maps.Point(mousePos.x - containerPos.x, mousePos.y - containerPos.y);
           currentLatLng = maptip.getProjection().fromContainerPixelToLatLng(containerPx);
-          delayTimeout = window.setTimeout(queryFusion, opts.delay || 400);
+          delayTimeout = window.setTimeout(queryFusion, opts.delay || 200);
         }
         currentCursor = c;
       });
@@ -215,11 +217,16 @@
       px.y -= tol * 2;
       var ne = prj.fromDivPixelToLatLng(px);
       var bounds = new google.maps.LatLngBounds(sw, ne);
-      var swhere = "ST_INTERSECTS(" + opts.geometryColumn + ",RECTANGLE(LATLNG(" + bounds.getSouthWest().lat() + "," + bounds.getSouthWest().lng() + "),LATLNG(" + bounds.getNorthEast().lat() + "," + bounds.getNorthEast().lng() + ")))";
-      if (opts.where) {
-        swhere += " AND " + opts.where;
+	  // Use the geometry column from the fusion table layer.
+	  var geometryColumn = opts.geometryColumn || me.query.select;
+      var swhere = "ST_INTERSECTS(" + geometryColumn + ",RECTANGLE(LATLNG(" + bounds.getSouthWest().lat() + "," + bounds.getSouthWest().lng() + "),LATLNG(" + bounds.getNorthEast().lat() + "," + bounds.getNorthEast().lng() + ")))";
+      var where = opts.where || me.query.where;
+	  if (where) {
+        swhere += " AND " + where;
       }
-      var queryText = encodeURIComponent("SELECT " + opts.select + " FROM " + opts.from + " WHERE " + swhere);
+	// Use the table id from the fusion table layer.
+	  var tableid = opts.from || me.query.from;
+      var queryText = encodeURIComponent("SELECT " + opts.select + " FROM " + tableid + " WHERE " + swhere);
       queryPending = true;
       queryFusionJson(latlng, queryText);
     }
@@ -308,13 +315,26 @@
     
   };
   /**
+   * Checks where there is map tips enabled.
+   */
+  google.maps.FusionTablesLayer.prototype.hasMapTips = function() {
+    if (this.maptipOverlay_) {
+	  return true;
+	} else {
+	  return false;
+	}
+  };
+  
+  /**
    * Disable map tips for the fusion layer.
    */
   google.maps.FusionTablesLayer.prototype.disableMapTips = function() {
-    this.maptipOverlay_.setMap(null);
-    this.maptipOverlay_ = null;
-    google.maps.event.removeListener(this.mousemoveListener_);
-    this.mousemoveListener_ = null;
+	if (this.maptipOverlay_) {
+      this.maptipOverlay_.setMap(null);
+      this.maptipOverlay_ = null;
+      google.maps.event.removeListener(this.mousemoveListener_);
+      this.mousemoveListener_ = null;
+	}
   };
   // cleanup
   var _setMap_ = google.maps.FusionTablesLayer.prototype.setMap;
